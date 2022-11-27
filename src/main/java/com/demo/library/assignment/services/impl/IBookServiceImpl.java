@@ -12,9 +12,11 @@ import java.util.List;
 public class IBookServiceImpl implements IBookService {
 
     private IBookRepository iBookRepository;
-    IBookServiceImpl(IBookRepository iBookRepository){
+
+    IBookServiceImpl(IBookRepository iBookRepository) {
         this.iBookRepository = iBookRepository;
     }
+
     @Override
     public Book save(Book book) {
         return iBookRepository.save(book);

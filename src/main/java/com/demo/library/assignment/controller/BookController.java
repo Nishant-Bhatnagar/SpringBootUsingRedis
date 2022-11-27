@@ -11,31 +11,31 @@ import java.util.List;
 public class BookController {
 
     private IBookService bookService;
-    BookController(IBookService bookService){
+
+    BookController(IBookService bookService) {
         this.bookService = bookService;
     }
 
 
     @PostMapping("AddNewBook")
-    public String saveBooks(@RequestBody Book book)
-    {
-         bookService.save(book);
+    public String saveBooks(@RequestBody Book book) {
+        bookService.save(book);
         return "Book added";
     }
 
     @GetMapping("GetAllBooks")
-    public List<Book> getAllBooks()
-    {
+    public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
+
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable int id)
-    {
+    public Book getBookById(@PathVariable int id) {
 
         return bookService.findBookById(id);
     }
+
     @DeleteMapping("/{id}")
-    public String removeBook(@PathVariable int id){
+    public String removeBook(@PathVariable int id) {
         return bookService.deleteBookById(id);
     }
 

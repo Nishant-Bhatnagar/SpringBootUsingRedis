@@ -15,8 +15,8 @@ public class IStudentServiceImpl implements IStudentService {
 
     private IBookRepository bookRepository;
     private IStudentRepository studentRepository;
-    IStudentServiceImpl(IBookRepository bookRepository, IStudentRepository studentRepository)
-    {
+
+    IStudentServiceImpl(IBookRepository bookRepository, IStudentRepository studentRepository) {
         this.bookRepository = bookRepository;
         this.studentRepository = studentRepository;
     }
@@ -32,7 +32,7 @@ public class IStudentServiceImpl implements IStudentService {
     public List<Student> getAllStudents() {
         Iterable<Student> all = studentRepository.findAll();
         List<Student> studentList = new ArrayList<>();
-        all.forEach(studentList :: add);
+        all.forEach(studentList::add);
         return studentList;
     }
 
@@ -49,14 +49,12 @@ public class IStudentServiceImpl implements IStudentService {
 
     @Override
     public String allocateBookToStudent(int studentId, int bookId) {
-        Book book =  bookRepository.findById(bookId).orElse(null);
-        if(book.getAvailableCopies() < 1)
-        {
+        Book book = bookRepository.findById(bookId).orElse(null);
+        if (book.getAvailableCopies() < 1) {
             return "No copies available";
         }
         Student student = findStudentById(studentId);
-        if(student.getAllocatedBook() >= 3)
-        {
+        if (student.getAllocatedBook() >= 3) {
             return "Student Already have the maximum books";
         }
         student.setAllocatedBook(student.getAllocatedBook() + 1);
@@ -70,12 +68,10 @@ public class IStudentServiceImpl implements IStudentService {
     public String unAlloactedBookToStudent(int studentId, int bookId) {
         Student student = studentRepository.findById(studentId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
-        if(student.getAllocatedBook() < 1)
-        {
+        if (student.getAllocatedBook() < 1) {
             return "No allocated book found";
         }
-        if(book.getAvailableCopies() >= book.getTotalCopies())
-        {
+        if (book.getAvailableCopies() >= book.getTotalCopies()) {
             return "No book allocated to students";
         }
 

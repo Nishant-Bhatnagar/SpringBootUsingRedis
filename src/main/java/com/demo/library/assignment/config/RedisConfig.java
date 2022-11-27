@@ -13,14 +13,15 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 public class RedisConfig {
     @Bean
-    public JedisConnectionFactory connectionFactory(){
+    public JedisConnectionFactory connectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         configuration.setHostName("localhost");
         configuration.setPort(6379);
         return new JedisConnectionFactory(configuration);
     }
+
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(){
+    public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory());
         template.setKeySerializer(new StringRedisSerializer());
