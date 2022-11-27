@@ -35,7 +35,7 @@ public class StudentRepository {
     }
     public Student findStudentById(int id){
         Object object = template.opsForHash().get(HASH_KEY, id);
-        Student student = objectMapper.convertValue(object, Student.class);
+       Student student = objectMapper.convertValue(object, Student.class);
         return student;
     }
     public String deleteStudentById(int id){
@@ -44,22 +44,39 @@ public class StudentRepository {
     }
 
     public String allocateBookToStudent(int studentId, int bookId){
-        Book book =  bookRepository.findBookById(bookId);
+       Book book =  bookRepository.findBookById(bookId);
         if(book.getAvailableCopies() < 1)
         {
             return "No copies available";
         }
-        Student student = findStudentById(studentId);
+       Student student = findStudentById(studentId);
         if(student.getAllocatedBook() >= 3)
         {
             return "Student Already have the maximum books";
         }
-        int allocatedBooks = student.getAllocatedBook();
-        student.setAllocatedBook(allocatedBooks + 1);
+        student.setAllocatedBook(student.getAllocatedBook() + 1);
         save(student);
         book.setAvailableCopies(book.getAvailableCopies() - 1);
         bookRepository.save(book);
         return "Book allocated to student";
 
+    }
+    public String unAlloactedBookToStudent(int studentId, int bookId){
+        Student student = findStudentById(studentId);
+        Book book = bookRepository.findBookById(bookId);
+        if(student.getAllocatedBook() < 1)
+        {
+            return "No allocated book found";
+        }
+        if(book.getAvailableCopies() >= book.getTotalCopies())
+        {
+            return "No book allocated to students";
+        }
+
+        student.setAllocatedBook(student.getAllocatedBook() - 1);
+        save(student);
+        book.setAvailableCopies(book.getAvailableCopies() + 1);
+        bookRepository.save(book);
+        return "Book unallocated successfully";
     }
 }

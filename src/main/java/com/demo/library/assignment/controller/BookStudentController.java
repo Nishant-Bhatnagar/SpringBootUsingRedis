@@ -23,6 +23,6 @@ public class BookStudentController {
     @PutMapping("UnAllocateBookToStudent")
     public String unallocatedBook(@RequestParam(value = "studentId") int studentId,
                                           @RequestParam(value = "bookId") int bookId){
-        return "unallocated";
+        return studentRepository.unAlloactedBookToStudent(studentId, bookId);
     }
 }
