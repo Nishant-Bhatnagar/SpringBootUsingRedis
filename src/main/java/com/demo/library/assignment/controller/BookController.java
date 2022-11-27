@@ -2,7 +2,6 @@ package com.demo.library.assignment.controller;
 
 import com.demo.library.assignment.model.Book;
 import com.demo.library.assignment.services.IBookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,8 +9,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/book/")
 public class BookController {
-    @Autowired
+
     private IBookService bookService;
+    BookController(IBookService bookService){
+        this.bookService = bookService;
+    }
 
 
     @PostMapping("AddNewBook")

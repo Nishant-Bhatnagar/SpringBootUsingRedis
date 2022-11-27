@@ -5,7 +5,6 @@ import com.demo.library.assignment.model.Student;
 import com.demo.library.assignment.repository.IBookRepository;
 import com.demo.library.assignment.repository.IStudentRepository;
 import com.demo.library.assignment.services.IStudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,11 +13,15 @@ import java.util.List;
 @Service
 public class IStudentServiceImpl implements IStudentService {
 
-   @Autowired
-   IBookRepository bookRepository;
+    private IBookRepository bookRepository;
+    private IStudentRepository studentRepository;
+    IStudentServiceImpl(IBookRepository bookRepository, IStudentRepository studentRepository)
+    {
+        this.bookRepository = bookRepository;
+        this.studentRepository = studentRepository;
+    }
 
-   @Autowired
-   IStudentRepository studentRepository;
+
     @Override
     public String save(Student student) {
         studentRepository.save(student);

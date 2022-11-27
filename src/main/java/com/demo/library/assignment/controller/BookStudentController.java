@@ -1,6 +1,6 @@
 package com.demo.library.assignment.controller;
+
 import com.demo.library.assignment.services.IStudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/")
 public class BookStudentController {
-    @Autowired
     private IStudentService studentService;
+
+    BookStudentController(IStudentService studentService){
+        this.studentService = studentService;
+    }
 
 
     @PutMapping("AllocateBookToStudent")

@@ -2,7 +2,6 @@ package com.demo.library.assignment.controller;
 
 import com.demo.library.assignment.model.Student;
 import com.demo.library.assignment.services.IStudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,9 +9,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/student")
 public class StudentController {
-
-    @Autowired
     private IStudentService studentService;
+    StudentController(IStudentService studentService){
+        this.studentService = studentService;
+    }
 
     @PostMapping("/AddNewStudent")
     public String addStudent(@RequestBody Student student)

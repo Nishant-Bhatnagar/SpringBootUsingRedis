@@ -3,7 +3,6 @@ package com.demo.library.assignment.services.impl;
 import com.demo.library.assignment.model.Book;
 import com.demo.library.assignment.repository.IBookRepository;
 import com.demo.library.assignment.services.IBookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,17 +11,19 @@ import java.util.List;
 @Service
 public class IBookServiceImpl implements IBookService {
 
-    @Autowired
-    private IBookRepository IBookRepository;
+    private IBookRepository iBookRepository;
+    IBookServiceImpl(IBookRepository iBookRepository){
+        this.iBookRepository = iBookRepository;
+    }
     @Override
     public Book save(Book book) {
-        return IBookRepository.save(book);
+        return iBookRepository.save(book);
     }
 
     @Override
     public List<Book> getAllBooks() {
 
-        Iterable<Book> all = IBookRepository.findAll();
+        Iterable<Book> all = iBookRepository.findAll();
         List<Book> bookList = new ArrayList<>();
         all.forEach(bookList::add);
         return bookList;
@@ -31,13 +32,13 @@ public class IBookServiceImpl implements IBookService {
 
     @Override
     public Book findBookById(int bookId) {
-        return IBookRepository.findById(bookId).orElse(null);
+        return iBookRepository.findById(bookId).orElse(null);
 
     }
 
     @Override
     public String deleteBookById(int id) {
-        IBookRepository.deleteById(id);
+        iBookRepository.deleteById(id);
         return "Deleted";
     }
 }
