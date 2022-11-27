@@ -30,9 +30,9 @@ public class IStudentServiceImpl implements IStudentService {
 
     @Override
     public List<Student> getAllStudents() {
-        Iterable<Student> all = studentRepository.findAll();
+        Iterable<Student> studentIterable = studentRepository.findAll();
         List<Student> studentList = new ArrayList<>();
-        all.forEach(studentList::add);
+        studentIterable.forEach(studentList::add);
         return studentList;
     }
 
@@ -43,42 +43,73 @@ public class IStudentServiceImpl implements IStudentService {
 
     @Override
     public String deleteStudentById(int id) {
-        studentRepository.deleteById(id);
-        return "Deleted";
+        Student student = findStudentById(id);
+        if (null != student) {
+            studentRepository.deleteById(id);
+            return "Deleted";
+        }
+        return "Student not found";
+
     }
 
     @Override
     public String allocateBookToStudent(int studentId, int bookId) {
-        Book book = bookRepository.findById(bookId).orElse(null);
-        if (book.getAvailableCopies() < 1) {
-            return "No copies available";
-        }
         Student student = findStudentById(studentId);
-        if (student.getAllocatedBook() >= 3) {
-            return "Student Already have the maximum books";
+        Book book = bookRepository.findById(bookId).orElse(null);
+        if (isBookAvailable(book, bookId) && isStudentEligible(student, studentId)) {
+            student.setAllocatedBook(student.getAllocatedBook() + 1);
+            save(student);
+            book.setAvailableCopies(book.getAvailableCopies() - 1);
+            bookRepository.save(book);
+            return "Book allotted to student";
         }
-        student.setAllocatedBook(student.getAllocatedBook() + 1);
-        save(student);
-        book.setAvailableCopies(book.getAvailableCopies() - 1);
-        bookRepository.save(book);
-        return "Book allocated to student";
+        return "Error";
+
+    }
+
+    private boolean isBookAvailable(Book book, int bookId) {
+        if (null != book && book.getAvailableCopies() > 1) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isStudentEligible(Student student, int studentId) {
+        if (null != student && student.getAllocatedBook() < 3) {
+            return true;
+        }
+        return false;
+
     }
 
     @Override
     public String unAlloactedBookToStudent(int studentId, int bookId) {
         Student student = studentRepository.findById(studentId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
-        if (student.getAllocatedBook() < 1) {
-            return "No allocated book found";
-        }
-        if (book.getAvailableCopies() >= book.getTotalCopies()) {
-            return "No book allocated to students";
+        if (isCopyOfBookAvailable(book, bookId) && isStudentHaveBook(student, studentId)) {
+            student.setAllocatedBook(student.getAllocatedBook() - 1);
+            save(student);
+            book.setAvailableCopies(book.getAvailableCopies() + 1);
+            bookRepository.save(book);
+            return "Book unallocated successfully";
         }
 
-        student.setAllocatedBook(student.getAllocatedBook() - 1);
-        save(student);
-        book.setAvailableCopies(book.getAvailableCopies() + 1);
-        bookRepository.save(book);
-        return "Book unallocated successfully";
+
+        return "Error";
+    }
+
+    private boolean isCopyOfBookAvailable(Book book, int bookId) {
+        if (null != book && (book.getAvailableCopies() < book.getTotalCopies())) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isStudentHaveBook(Student student, int studentId) {
+        if (null != student && student.getAllocatedBook() > 0) {
+            return true;
+        }
+        return false;
+
     }
 }

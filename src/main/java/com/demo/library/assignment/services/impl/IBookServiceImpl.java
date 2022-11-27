@@ -25,9 +25,9 @@ public class IBookServiceImpl implements IBookService {
     @Override
     public List<Book> getAllBooks() {
 
-        Iterable<Book> all = iBookRepository.findAll();
+        Iterable<Book> bookIterable = iBookRepository.findAll();
         List<Book> bookList = new ArrayList<>();
-        all.forEach(bookList::add);
+        bookIterable.forEach(bookList::add);
         return bookList;
 
     }
@@ -40,7 +40,12 @@ public class IBookServiceImpl implements IBookService {
 
     @Override
     public String deleteBookById(int id) {
-        iBookRepository.deleteById(id);
-        return "Deleted";
+        Book book = findBookById(id);
+        if (null != book) {
+            iBookRepository.deleteById(id);
+            return "Deleted";
+        }
+        return "Book not found";
+
     }
 }
