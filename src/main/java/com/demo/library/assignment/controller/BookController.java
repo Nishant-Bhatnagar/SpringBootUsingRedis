@@ -2,6 +2,7 @@ package com.demo.library.assignment.controller;
 
 import com.demo.library.assignment.model.Book;
 import com.demo.library.assignment.repository.BookRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +14,12 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+
     @PostMapping("AddNewBook")
-    public Book saveBooks(@RequestBody Book book)
+    public String saveBooks(@RequestBody Book book)
     {
-        return bookRepository.save(book);
+         bookRepository.save(book);
+        return "Book added";
     }
 
     @GetMapping("GetAllBooks")
@@ -25,8 +28,9 @@ public class BookController {
         return bookRepository.getAllBooks();
     }
     @GetMapping("/{id}")
-    public Object getBookById(@PathVariable int id)
+    public Book getBookById(@PathVariable int id)
     {
+
         return bookRepository.findBookById(id);
     }
     @DeleteMapping("/{id}")

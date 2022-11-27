@@ -1,6 +1,7 @@
 package com.demo.library.assignment.repository;
 
 import com.demo.library.assignment.model.Book;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,6 +15,7 @@ public class BookRepository {
     @Autowired
     @Qualifier("redisTemplate")
     private RedisTemplate template;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     public Book save(Book book){
         template.opsForHash().put(HASH_KEY,book.getId(), book);
@@ -23,11 +25,14 @@ public class BookRepository {
     public List<Book> getAllBooks(){
         return template.opsForHash().values(HASH_KEY);
     }
-    public Object findBookById(int id){
-        return template.opsForHash().get(HASH_KEY, id);
+    public Book findBookById(int id){
+        Object object = template.opsForHash().get(HASH_KEY, id);
+        Book book = objectMapper.convertValue(object, Book.class);
+        return book;
     }
     public String deleteBookById(int id){
         template.opsForHash().delete(HASH_KEY, id);
         return "Book removed successfully";
     }
+
 }
