@@ -19,8 +19,13 @@ public class BookController {
 
     @PostMapping("AddNewBook")
     public String saveBooks(@RequestBody Book book) {
-        bookService.save(book);
-        return "Book added";
+        try {
+            bookService.save(book);
+            return "Book added";
+        } catch (RuntimeException e) {
+            return e.toString();
+        }
+
     }
 
     @GetMapping("GetAllBooks")
@@ -34,7 +39,7 @@ public class BookController {
         return bookService.findBookById(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public String removeBook(@PathVariable int id) {
         return bookService.deleteBookById(id);
     }

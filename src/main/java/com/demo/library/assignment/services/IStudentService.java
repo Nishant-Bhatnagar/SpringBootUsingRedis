@@ -5,7 +5,7 @@ import com.demo.library.assignment.model.Student;
 import java.util.List;
 
 public interface IStudentService {
-    public String save(Student student);
+    public Student save(Student student);
 
     public List<Student> getAllStudents();
 

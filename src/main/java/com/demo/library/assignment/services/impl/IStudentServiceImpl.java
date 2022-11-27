@@ -23,9 +23,8 @@ public class IStudentServiceImpl implements IStudentService {
 
 
     @Override
-    public String save(Student student) {
-        studentRepository.save(student);
-        return "Saved";
+    public Student save(Student student) {
+        return studentRepository.save(student);
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/student")
+@RequestMapping("/api/v1/student/")
 public class StudentController {
     private IStudentService studentService;
 
@@ -15,13 +15,19 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/AddNewStudent")
+    @PostMapping("AddNewStudent")
     public String addStudent(@RequestBody Student student) {
+        try {
+            studentService.save(student);
+            return "Student added";
+        } catch (RuntimeException e) {
+            return e.toString();
+        }
 
-        return studentService.save(student);
+
     }
 
-    @GetMapping("/GetAllStudents")
+    @GetMapping("GetAllStudents")
     public List<Student> getAllStudents() {
         return studentService.getAllStudents();
     }
@@ -31,7 +37,7 @@ public class StudentController {
         return studentService.findStudentById(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteStudent(@PathVariable int id) {
         return studentService.deleteStudentById(id);
     }
