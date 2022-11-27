@@ -1,11 +1,10 @@
 package com.demo.library.assignment.services;
 
 import com.demo.library.assignment.model.Student;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface StudentServiceInterface {
+public interface IStudentService {
     public String save(Student student);
     public List<Student> getAllStudents();
     public Student findStudentById(int id);

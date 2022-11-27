@@ -1,6 +1,5 @@
 package com.demo.library.assignment.model;
 
-import jakarta.validation.constraints.Max;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +18,5 @@ public class Student implements Serializable {
     @Id
     private int id;
     private String name;
-    @Max(value = 3,message = "Student cannot have more than 3 books")
     private int allocatedBook;
 }

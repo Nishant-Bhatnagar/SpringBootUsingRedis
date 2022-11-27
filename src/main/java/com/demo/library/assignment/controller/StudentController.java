@@ -1,7 +1,7 @@
 package com.demo.library.assignment.controller;
 
 import com.demo.library.assignment.model.Student;
-import com.demo.library.assignment.services.StudentServiceInterface;
+import com.demo.library.assignment.services.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,27 +12,27 @@ import java.util.List;
 public class StudentController {
 
     @Autowired
-    private StudentServiceInterface studentServiceInterface;
+    private IStudentService studentService;
 
     @PostMapping("/AddNewStudent")
     public String addStudent(@RequestBody Student student)
     {
 
-        return studentServiceInterface.save(student);
+        return studentService.save(student);
     }
 
     @GetMapping("/GetAllStudents")
     public List<Student> getAllStudents()
     {
-        return studentServiceInterface.getAllStudents();
+        return studentService.getAllStudents();
     }
     @GetMapping("/{id}")
     public Object getStudentById(@PathVariable int id)
     {
-        return studentServiceInterface.findStudentById(id);
+        return studentService.findStudentById(id);
     }
     @DeleteMapping("/{id}")
     public String deleteStudent(@PathVariable int id){
-        return studentServiceInterface.deleteStudentById(id);
+        return studentService.deleteStudentById(id);
     }
 }
