@@ -20,7 +20,7 @@ public class StudentController {
         try {
             studentService.save(student);
             return "Student added";
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             return e.toString();
         }
 
@@ -32,12 +32,12 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Object getStudentById(@PathVariable int id) {
         return studentService.findStudentById(id);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("delete/{id}")
     public String deleteStudent(@PathVariable int id) {
         return studentService.deleteStudentById(id);
     }

@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class IBookServiceImpl implements IBookService {
+public class BookServiceImpl implements IBookService {
 
     private IBookRepository iBookRepository;
 
-    IBookServiceImpl(IBookRepository iBookRepository) {
+    BookServiceImpl(IBookRepository iBookRepository) {
         this.iBookRepository = iBookRepository;
     }
 

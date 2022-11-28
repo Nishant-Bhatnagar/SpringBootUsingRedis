@@ -22,7 +22,7 @@ public class BookController {
         try {
             bookService.save(book);
             return "Book added";
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             return e.toString();
         }
 
@@ -33,13 +33,13 @@ public class BookController {
         return bookService.getAllBooks();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Book getBookById(@PathVariable int id) {
 
         return bookService.findBookById(id);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("delete/{id}")
     public String removeBook(@PathVariable int id) {
         return bookService.deleteBookById(id);
     }

@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class IStudentServiceImpl implements IStudentService {
+public class StudentServiceImpl implements IStudentService {
 
     private IBookRepository bookRepository;
     private IStudentRepository studentRepository;
 
-    IStudentServiceImpl(IBookRepository bookRepository, IStudentRepository studentRepository) {
+    StudentServiceImpl(IBookRepository bookRepository, IStudentRepository studentRepository) {
         this.bookRepository = bookRepository;
         this.studentRepository = studentRepository;
     }
@@ -55,25 +55,26 @@ public class IStudentServiceImpl implements IStudentService {
     public String allocateBookToStudent(int studentId, int bookId) {
         Student student = findStudentById(studentId);
         Book book = bookRepository.findById(bookId).orElse(null);
-        if (isBookAvailable(book, bookId) && isStudentEligible(student, studentId)) {
+        if (isBookAvailable(book) && isStudentEligible(student)) {
             student.setAllocatedBook(student.getAllocatedBook() + 1);
             save(student);
             book.setAvailableCopies(book.getAvailableCopies() - 1);
             bookRepository.save(book);
             return "Book allotted to student";
         }
-        return "Error";
+        return "Error cause due to one of the reasons:" +
+                "Student is not Eligible  or Book is not available";
 
     }
 
-    private boolean isBookAvailable(Book book, int bookId) {
+    private boolean isBookAvailable(Book book) {
         if (null != book && book.getAvailableCopies() > 1) {
             return true;
         }
         return false;
     }
 
-    private boolean isStudentEligible(Student student, int studentId) {
+    private boolean isStudentEligible(Student student) {
         if (null != student && student.getAllocatedBook() < 3) {
             return true;
         }
@@ -94,7 +95,7 @@ public class IStudentServiceImpl implements IStudentService {
         }
 
 
-        return "Error";
+        return "Student does not have any book allotted";
     }
 
     private boolean isCopyOfBookAvailable(Book book, int bookId) {
